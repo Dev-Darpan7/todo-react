@@ -1,27 +1,37 @@
 // ➡️ Import React's useState hook so we can store changing data.
 import { useState } from "react"
 
+// ➡️ Import CSS styles.
+import "./App.css"
+
 // ➡️ Create a React component called App.
 function App() {
 
-  // ➡️ Stores what user is typing in the input box.
+  // ➡️ Stores what the user is typing.
   const [task, setTask] = useState("")
 
-  // ➡️ Stores all tasks in an array.
+  // ➡️ Stores all todos.
+  // ➡️ Each todo will now be an OBJECT instead of a string.
   const [todos, setTodos] = useState([])
 
   // ➡️ Runs when Add button is clicked.
   function addTodo() {
 
-    // ➡️ If input is empty or only spaces, stop.
+    // ➡️ Prevent empty tasks.
     if (task.trim() === "") return
 
-    // ➡️ Create a new array:
-    // ➡️ Copy all old todos (...todos)
-    // ➡️ Add the new task at the end.
-    setTodos([...todos, task])
+    // ➡️ Create a new todo object.
+    // ➡️ text = actual task
+    // ➡️ completed = task status
+    setTodos([
+      ...todos,
+      {
+        text: task,
+        completed: false
+      }
+    ])
 
-    // ➡️ Clear the input box after adding.
+    // ➡️ Clear input after adding.
     setTask("")
   }
 
@@ -29,49 +39,49 @@ function App() {
   function deleteTodo(todoToDelete) {
 
     // ➡️ Loop through all todos.
-    // ➡️ Keep every todo EXCEPT the one we want to delete.
+    // ➡️ Keep every todo except the one we clicked.
     const newTodos = todos.filter(
-      (todo) => todo !== todoToDelete
+      (todo) => todo.text !== todoToDelete.text
     )
 
-    // ➡️ Update state with the filtered array.
+    // ➡️ Update state.
     setTodos(newTodos)
   }
 
-  // ➡️ Return the UI that should appear on the screen.
+  // ➡️ Return what appears on the screen.
   return (
     <div>
 
-      {/* ➡️ Page heading */}
+      {/* ➡️ Page title */}
       <h1>Todo App</h1>
 
-      {/* ➡️ Input box */}
+      {/* ➡️ Input field */}
       <input
         type="text"
 
-        // ➡️ Show current task value.
+        // ➡️ Show current value of task.
         value={task}
 
         // ➡️ Update task whenever user types.
         onChange={(e) => setTask(e.target.value)}
       />
 
-      {/* ➡️ Add task button */}
+      {/* ➡️ Add button */}
       <button onClick={addTodo}>
         Add
       </button>
 
-      {/* ➡️ Show what user is typing */}
+      {/* ➡️ Display current input value */}
       <p>You typed: {task}</p>
 
       {/* ➡️ Loop through todos array */}
       {todos.map((todo, index) => (
 
-        // ➡️ key helps React track each item.
+        // ➡️ React uses key to identify items.
         <div key={index}>
 
-          {/* ➡️ Display todo text */}
-          <p>{todo}</p>
+          {/* ➡️ Display the text property of the object */}
+          <p>{todo.text}</p>
 
           {/* ➡️ Delete this specific todo */}
           <button onClick={() => deleteTodo(todo)}>
@@ -85,5 +95,5 @@ function App() {
   )
 }
 
-// ➡️ Make this component available so React can render it.
+// ➡️ Export component.
 export default App

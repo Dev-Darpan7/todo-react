@@ -1,12 +1,12 @@
 body {
   font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
+  background-color: #494040;
 }
 
 div {
-  max-width: 500px;
+  max-width: 300px;
   margin: 50px auto;
-  background: white;
+  background: rgb(37, 30, 30);
   padding: 20px;
   border-radius: 10px;
 }
@@ -16,7 +16,7 @@ h1 {
 }
 
 input {
-  padding: 10px;
+  padding: 8px;
   width: 70%;
   margin-right: 10px;
 }
