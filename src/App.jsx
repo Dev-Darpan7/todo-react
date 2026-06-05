@@ -10,19 +10,16 @@ function App() {
   // ➡️ Stores what the user is typing.
   const [task, setTask] = useState("")
 
-  // ➡️ Stores all todos.
-  // ➡️ Each todo will now be an OBJECT instead of a string.
+  // ➡️ Stores all todos as objects.
   const [todos, setTodos] = useState([])
 
   // ➡️ Runs when Add button is clicked.
   function addTodo() {
 
-    // ➡️ Prevent empty tasks.
+    // ➡️ Prevent adding empty tasks.
     if (task.trim() === "") return
 
-    // ➡️ Create a new todo object.
-    // ➡️ text = actual task
-    // ➡️ completed = task status
+    // ➡️ Create a new todo object and add it to the array.
     setTodos([
       ...todos,
       {
@@ -38,14 +35,20 @@ function App() {
   // ➡️ Runs when Delete button is clicked.
   function deleteTodo(todoToDelete) {
 
-    // ➡️ Loop through all todos.
-    // ➡️ Keep every todo except the one we clicked.
+    // ➡️ Keep every todo except the one clicked.
     const newTodos = todos.filter(
       (todo) => todo.text !== todoToDelete.text
     )
 
     // ➡️ Update state.
     setTodos(newTodos)
+  }
+
+  // ➡️ Runs when Clear All button is clicked.
+  function clearTodos() {
+
+    // ➡️ Replace all todos with an empty array.
+    setTodos([])
   }
 
   // ➡️ Return what appears on the screen.
@@ -59,28 +62,41 @@ function App() {
       <input
         type="text"
 
-        // ➡️ Show current value of task.
+        // ➡️ Show current task value.
         value={task}
 
         // ➡️ Update task whenever user types.
         onChange={(e) => setTask(e.target.value)}
       />
 
-      {/* ➡️ Add button */}
+      {/* ➡️ Add task button */}
       <button onClick={addTodo}>
         Add
       </button>
 
-      {/* ➡️ Display current input value */}
+      {/* ➡️ Clear all tasks button */}
+      <button onClick={clearTodos}>
+        Clear All
+      </button>
+
+      {/* ➡️ Show current text being typed */}
       <p>You typed: {task}</p>
+
+      {/* ➡️ Show total number of tasks */}
+      <p>Total Tasks: {todos.length}</p>
+
+      {/* ➡️ If there are no tasks, show a message */}
+      {todos.length === 0 && (
+        <p>No tasks yet</p>
+      )}
 
       {/* ➡️ Loop through todos array */}
       {todos.map((todo, index) => (
 
-        // ➡️ React uses key to identify items.
+        // ➡️ key helps React track each item.
         <div key={index}>
 
-          {/* ➡️ Display the text property of the object */}
+          {/* ➡️ Display todo text */}
           <p>{todo.text}</p>
 
           {/* ➡️ Delete this specific todo */}
@@ -95,5 +111,5 @@ function App() {
   )
 }
 
-// ➡️ Export component.
+// ➡️ Export component so React can use it.
 export default App
