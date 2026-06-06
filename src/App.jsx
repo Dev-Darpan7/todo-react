@@ -1,38 +1,36 @@
-// ➡️ Import React's useState and useEffect hooks.
+// ➡️ Import React hooks for state and lifecycle
 import { useState, useEffect } from "react"
 
-// ➡️ Import CSS styles.
+// ➡️ Import CSS
 import "./App.css"
 
-// ➡️ Create a React component called App.
+// ➡️ Main App component
 function App() {
 
-  // ➡️ Stores what the user is typing.
+  // ➡️ Stores what user types in input box
   const [task, setTask] = useState("")
 
-  // ➡️ When app starts:
-  // ➡️ Try loading saved todos from browser storage.
+  // ➡️ Stores all todos (loaded from localStorage if available)
   const [todos, setTodos] = useState(() => {
 
-    // ➡️ Read saved data.
     const savedTodos = localStorage.getItem("todos")
 
-    // ➡️ If data exists, convert text back into an array.
+    // ➡️ If saved todos exist → convert from string to array
     if (savedTodos) {
       return JSON.parse(savedTodos)
     }
 
-    // ➡️ Otherwise start empty.
+    // ➡️ Otherwise start with empty list
     return []
   })
 
-  // ➡️ Runs when Add button is clicked.
+  // ➡️ Add new todo
   function addTodo() {
 
-    // ➡️ Prevent adding empty tasks.
+    // ➡️ Prevent empty tasks
     if (task.trim() === "") return
 
-    // ➡️ Add a new todo object to the array.
+    // ➡️ Add new todo object
     setTodos([
       ...todos,
       {
@@ -41,158 +39,127 @@ function App() {
       }
     ])
 
-    // ➡️ Clear input after adding.
+    // ➡️ Clear input after adding
     setTask("")
   }
 
-  // ➡️ Runs when Delete button is clicked.
+  // ➡️ Delete todo
   function deleteTodo(todoToDelete) {
 
-    // ➡️ Keep every todo except the one clicked.
+    // ➡️ Keep everything except selected todo
     const newTodos = todos.filter(
       (todo) => todo.text !== todoToDelete.text
     )
 
-    // ➡️ Update state.
     setTodos(newTodos)
   }
 
-  // ➡️ Runs when Complete button is clicked.
+  // ➡️ Toggle completed state
   function toggleComplete(todoToToggle) {
 
-    // ➡️ Loop through every todo.
-    const newTodos = todos.map((todo) => {
+    const updatedTodos = todos.map((todo) => {
 
-      // ➡️ Found the todo we clicked.
+      // ➡️ Find clicked todo
       if (todo.text === todoToToggle.text) {
 
-        // ➡️ Return a copy of the object.
+        // ➡️ Flip completed true/false
         return {
-
-          // ➡️ Copy all existing properties.
           ...todo,
-
-          // ➡️ Reverse completed status.
           completed: !todo.completed
         }
       }
 
-      // ➡️ Keep all other todos unchanged.
       return todo
     })
 
-    // ➡️ Update state.
-    setTodos(newTodos)
+    setTodos(updatedTodos)
   }
 
-  // ➡️ Runs when Clear All button is clicked.
+  // ➡️ Clear all todos
   function clearTodos() {
-
-    // ➡️ Remove all tasks.
     setTodos([])
   }
 
-  // ➡️ Runs every time todos changes.
+  // ➡️ Save todos in localStorage whenever they change
   useEffect(() => {
-
-    // ➡️ Save todos into browser storage.
-    localStorage.setItem(
-
-      // ➡️ Storage key name.
-      "todos",
-
-      // ➡️ Convert array into text.
-      JSON.stringify(todos)
-
-    )
-
+    localStorage.setItem("todos", JSON.stringify(todos))
   }, [todos])
 
-  // ➡️ Return what appears on screen.
+  // ➡️ UI
   return (
-    <div>
+    <div className="app-container">
 
-      {/* ➡️ Page title */}
-      <h1>Todo App</h1>
+      {/* ➡️ Title */}
+      <h1 className="title">Todo App</h1>
 
-      {/* ➡️ Input field */}
-      <input
-        type="text"
+      {/* ➡️ Input section */}
+      <div className="input-section">
 
-        // ➡️ Show current task value.
-        value={task}
+        <input
+          type="text"
+          placeholder="Enter task..."
+          value={task}
+          onChange={(e) => setTask(e.target.value)}
+        />
 
-        // ➡️ Update task whenever user types.
-        onChange={(e) => setTask(e.target.value)}
-      />
+        <button className="add-btn" onClick={addTodo}>
+          Add
+        </button>
 
-      {/* ➡️ Add task button */}
-      <button onClick={addTodo}>
-        Add
-      </button>
+        <button className="clear-btn" onClick={clearTodos}>
+          Clear
+        </button>
 
-      {/* ➡️ Clear all tasks button */}
-      <button onClick={clearTodos}>
-        Clear All
-      </button>
+      </div>
 
-      {/* ➡️ Show current input */}
-      <p>You typed: {task}</p>
+      {/* ➡️ Stats */}
+      <p className="stats">Total Tasks: {todos.length}</p>
 
-      {/* ➡️ Show number of tasks */}
-      <p>Total Tasks: {todos.length}</p>
-
-      {/* ➡️ Show message if there are no tasks */}
+      {/* ➡️ Empty state */}
       {todos.length === 0 && (
-        <p>No tasks yet</p>
+        <p className="empty">No tasks yet 🚀</p>
       )}
 
-      {/* ➡️ Loop through todos array */}
-      {todos.map((todo, index) => (
+      {/* ➡️ Todo list */}
+      <div className="todo-list">
 
-        <div key={index}>
+        {todos.map((todo, index) => (
 
-          {/* ➡️ Display todo text */}
-          {/* ➡️ If completed, draw a line through the text */}
-          <p
-            style={{
+          <div className="todo-item" key={index}>
 
-              // ➡️ Ternary operator.
-              // ➡️ If completed is true:
-              // ➡️ Show line-through.
-              // ➡️ Otherwise show normal text.
-              textDecoration:
-                todo.completed
-                  ? "line-through"
-                  : "none"
+            {/* ➡️ Todo text */}
+            <span
+              className={todo.completed ? "completed" : ""}
+            >
+              {todo.text}
+            </span>
 
-            }}
-          >
+            {/* ➡️ Buttons */}
+            <div className="actions">
 
-            {/* ➡️ Show emoji based on completed status */}
-            {todo.completed ? "✅ " : "⬜ "}
+              <button
+                className="complete-btn"
+                onClick={() => toggleComplete(todo)}
+              >
+                {todo.completed ? "Undo" : "Done"}
+              </button>
 
-            {/* ➡️ Show task text */}
-            {todo.text}
+              <button
+                className="delete-btn"
+                onClick={() => deleteTodo(todo)}
+              >
+                Delete
+              </button>
 
-          </p>
+            </div>
 
-          {/* ➡️ Delete this todo */}
-          <button onClick={() => deleteTodo(todo)}>
-            Delete
-          </button>
+          </div>
+        ))}
 
-          {/* ➡️ Toggle completed status */}
-          <button onClick={() => toggleComplete(todo)}>
-            Complete
-          </button>
-
-        </div>
-      ))}
+      </div>
 
     </div>
   )
 }
 
-// ➡️ Export component so React can use it.
 export default App

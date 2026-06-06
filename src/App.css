@@ -1,95 +1,121 @@
-/* ➡️ Full page */
+/* ➡️ Page background */
 body {
-  font-family: Arial, sans-serif;
-
-  background: linear-gradient(135deg, #1e1e2f, #2d2d44);
-
   margin: 0;
-
-  min-height: 100vh;
-
+  font-family: Arial;
+  background: linear-gradient(135deg, #141e30, #243b55);
   display: flex;
   justify-content: center;
   align-items: center;
-
+  min-height: 100vh;
   color: white;
 }
 
-/* ➡️ Main todo container */
-div {
-  width: 400px;
-  background: #2b2b3c;
-  padding: 25px;
-  border-radius: 20px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-
-  /* ➡️ Smooth hover animation */
-  transition: transform 0.3s ease;
-}
-
-/* ➡️ Slight lift effect */
-div:hover {
-  transform: translateY(-3px);
+/* ➡️ Main container */
+.app-container {
+  width: 420px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
 }
 
 /* ➡️ Title */
-h1 {
+.title {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
-/* ➡️ Input */
+/* ➡️ Input section */
+.input-section {
+  display: flex;
+  gap: 10px;
+}
+
 input {
-  width: 65%;
+  flex: 1;
   padding: 10px;
   border: none;
-  border-radius: 10px;
+  border-radius: 8px;
   outline: none;
-  margin-right: 10px;
 }
 
 /* ➡️ Buttons */
 button {
   border: none;
-  padding: 10px 12px;
-  border-radius: 10px;
+  padding: 8px 10px;
+  border-radius: 8px;
   cursor: pointer;
-  margin: 3px;
-
-  background: #5c7cfa;
-  color: white;
-
-  transition: all 0.25s ease;
+  transition: 0.2s;
 }
 
-/* ➡️ Button hover animation */
 button:hover {
-  background: #4c6ef5;
   transform: scale(1.05);
 }
 
-/* ➡️ Button click animation */
-button:active {
-  transform: scale(0.95);
+/* ➡️ Add button */
+.add-btn {
+  background: #4caf50;
+  color: white;
 }
 
-/* ➡️ Todo text */
-p {
-  margin: 10px 0;
+/* ➡️ Clear button */
+.clear-btn {
+  background: #ff4d4d;
+  color: white;
 }
 
-/* ➡️ Todo item card */
-div > div {
-  background: #383850;
-  padding: 10px;
+/* ➡️ Stats */
+.stats {
   margin-top: 10px;
-  border-radius: 10px;
-
-  transition: all 0.3s ease;
+  opacity: 0.8;
 }
 
-/* ➡️ Todo hover effect */
-div > div:hover {
-  background: #454566;
+/* ➡️ Empty text */
+.empty {
+  text-align: center;
+  opacity: 0.6;
+}
+
+/* ➡️ Todo list */
+.todo-list {
+  margin-top: 10px;
+}
+
+/* ➡️ Each todo */
+.todo-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255,255,255,0.1);
+  padding: 10px;
+  border-radius: 10px;
+  margin-top: 8px;
+  transition: 0.2s;
+}
+
+.todo-item:hover {
   transform: translateX(5px);
+}
+
+/* ➡️ Completed task */
+.completed {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+/* ➡️ Action buttons */
+.actions {
+  display: flex;
+  gap: 5px;
+}
+
+.complete-btn {
+  background: #2196f3;
+  color: white;
+}
+
+.delete-btn {
+  background: #e53935;
+  color: white;
 }
