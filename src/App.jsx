@@ -19,12 +19,12 @@ function App() {
     // ➡️ Prevent adding empty tasks.
     if (task.trim() === "") return
 
-    // ➡️ Create a new todo object and add it to the array.
+    // ➡️ Add a new todo object to the array.
     setTodos([
       ...todos,
       {
-        text: task,
-        completed: false
+        text: task,          // ➡️ Task name
+        completed: false     // ➡️ Starts as not completed
       }
     ])
 
@@ -44,14 +44,44 @@ function App() {
     setTodos(newTodos)
   }
 
+  // ➡️ Runs when Complete button is clicked.
+  function toggleComplete(todoToToggle) {
+
+    // ➡️ Loop through every todo.
+    const newTodos = todos.map((todo) => {
+
+      // ➡️ Found the todo we clicked.
+      if (todo.text === todoToToggle.text) {
+
+        // ➡️ Return a copy of the object.
+        return {
+
+          // ➡️ Copy all existing properties.
+          ...todo,
+
+          // ➡️ Reverse completed status.
+          // false becomes true
+          // true becomes false
+          completed: !todo.completed
+        }
+      }
+
+      // ➡️ For all other todos, keep them unchanged.
+      return todo
+    })
+
+    // ➡️ Update state.
+    setTodos(newTodos)
+  }
+
   // ➡️ Runs when Clear All button is clicked.
   function clearTodos() {
 
-    // ➡️ Replace all todos with an empty array.
+    // ➡️ Remove all tasks.
     setTodos([])
   }
 
-  // ➡️ Return what appears on the screen.
+  // ➡️ Return what appears on screen.
   return (
     <div>
 
@@ -79,13 +109,13 @@ function App() {
         Clear All
       </button>
 
-      {/* ➡️ Show current text being typed */}
+      {/* ➡️ Show current input */}
       <p>You typed: {task}</p>
 
-      {/* ➡️ Show total number of tasks */}
+      {/* ➡️ Show number of tasks */}
       <p>Total Tasks: {todos.length}</p>
 
-      {/* ➡️ If there are no tasks, show a message */}
+      {/* ➡️ Show message if there are no tasks */}
       {todos.length === 0 && (
         <p>No tasks yet</p>
       )}
@@ -96,12 +126,27 @@ function App() {
         // ➡️ key helps React track each item.
         <div key={index}>
 
-          {/* ➡️ Display todo text */}
-          <p>{todo.text}</p>
+          {/* ➡️ Show different emoji depending on completed status */}
+          <p>
 
-          {/* ➡️ Delete this specific todo */}
+            {/* ➡️ Ternary operator */}
+            {/* ➡️ If completed is true show ✅ */}
+            {/* ➡️ Else show ⬜ */}
+            {todo.completed ? "✅ " : "⬜ "}
+
+            {/* ➡️ Show task text */}
+            {todo.text}
+
+          </p>
+
+          {/* ➡️ Delete this todo */}
           <button onClick={() => deleteTodo(todo)}>
             Delete
+          </button>
+
+          {/* ➡️ Toggle completed status */}
+          <button onClick={() => toggleComplete(todo)}>
+            Complete
           </button>
 
         </div>
