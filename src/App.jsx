@@ -1,5 +1,5 @@
-// ➡️ Import React's useState hook so we can store changing data.
-import { useState } from "react"
+// ➡️ Import React's useState and useeffecct hook so we can store changing data.
+import { useState, useEffect } from "react"
 
 // ➡️ Import CSS styles.
 import "./App.css"
@@ -10,8 +10,21 @@ function App() {
   // ➡️ Stores what the user is typing.
   const [task, setTask] = useState("")
 
-  // ➡️ Stores all todos as objects.
-  const [todos, setTodos] = useState([])
+  // ➡️ When app starts:
+// ➡️ Try loading saved todos from browser storage.
+const [todos, setTodos] = useState(() => {
+
+  // ➡️ Read saved data.
+  const savedTodos = localStorage.getItem("todos")
+
+  // ➡️ If data exists, convert text back into an array.
+  if (savedTodos) {
+    return JSON.parse(savedTodos)
+  }
+
+  // ➡️ Otherwise start empty.
+  return []
+})
 
   // ➡️ Runs when Add button is clicked.
   function addTodo() {
@@ -80,7 +93,18 @@ function App() {
     // ➡️ Remove all tasks.
     setTodos([])
   }
+// ➡️ Runs every time todos changes.
+useEffect(() => {
 
+  // ➡️ Save todos into browser storage.
+  localStorage.setItem(
+    "todos",
+
+    // ➡️ Convert array into text.
+    JSON.stringify(todos)
+  )
+
+}, [todos])
   // ➡️ Return what appears on screen.
   return (
     <div>
