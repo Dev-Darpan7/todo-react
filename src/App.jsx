@@ -1,4 +1,4 @@
-// ➡️ Import React's useState and useeffecct hook so we can store changing data.
+// ➡️ Import React's useState and useEffect hooks.
 import { useState, useEffect } from "react"
 
 // ➡️ Import CSS styles.
@@ -11,20 +11,20 @@ function App() {
   const [task, setTask] = useState("")
 
   // ➡️ When app starts:
-// ➡️ Try loading saved todos from browser storage.
-const [todos, setTodos] = useState(() => {
+  // ➡️ Try loading saved todos from browser storage.
+  const [todos, setTodos] = useState(() => {
 
-  // ➡️ Read saved data.
-  const savedTodos = localStorage.getItem("todos")
+    // ➡️ Read saved data.
+    const savedTodos = localStorage.getItem("todos")
 
-  // ➡️ If data exists, convert text back into an array.
-  if (savedTodos) {
-    return JSON.parse(savedTodos)
-  }
+    // ➡️ If data exists, convert text back into an array.
+    if (savedTodos) {
+      return JSON.parse(savedTodos)
+    }
 
-  // ➡️ Otherwise start empty.
-  return []
-})
+    // ➡️ Otherwise start empty.
+    return []
+  })
 
   // ➡️ Runs when Add button is clicked.
   function addTodo() {
@@ -36,8 +36,8 @@ const [todos, setTodos] = useState(() => {
     setTodos([
       ...todos,
       {
-        text: task,          // ➡️ Task name
-        completed: false     // ➡️ Starts as not completed
+        text: task,
+        completed: false
       }
     ])
 
@@ -73,13 +73,11 @@ const [todos, setTodos] = useState(() => {
           ...todo,
 
           // ➡️ Reverse completed status.
-          // false becomes true
-          // true becomes false
           completed: !todo.completed
         }
       }
 
-      // ➡️ For all other todos, keep them unchanged.
+      // ➡️ Keep all other todos unchanged.
       return todo
     })
 
@@ -93,18 +91,23 @@ const [todos, setTodos] = useState(() => {
     // ➡️ Remove all tasks.
     setTodos([])
   }
-// ➡️ Runs every time todos changes.
-useEffect(() => {
 
-  // ➡️ Save todos into browser storage.
-  localStorage.setItem(
-    "todos",
+  // ➡️ Runs every time todos changes.
+  useEffect(() => {
 
-    // ➡️ Convert array into text.
-    JSON.stringify(todos)
-  )
+    // ➡️ Save todos into browser storage.
+    localStorage.setItem(
 
-}, [todos])
+      // ➡️ Storage key name.
+      "todos",
+
+      // ➡️ Convert array into text.
+      JSON.stringify(todos)
+
+    )
+
+  }, [todos])
+
   // ➡️ Return what appears on screen.
   return (
     <div>
@@ -147,15 +150,26 @@ useEffect(() => {
       {/* ➡️ Loop through todos array */}
       {todos.map((todo, index) => (
 
-        // ➡️ key helps React track each item.
         <div key={index}>
 
-          {/* ➡️ Show different emoji depending on completed status */}
-          <p>
+          {/* ➡️ Display todo text */}
+          {/* ➡️ If completed, draw a line through the text */}
+          <p
+            style={{
 
-            {/* ➡️ Ternary operator */}
-            {/* ➡️ If completed is true show ✅ */}
-            {/* ➡️ Else show ⬜ */}
+              // ➡️ Ternary operator.
+              // ➡️ If completed is true:
+              // ➡️ Show line-through.
+              // ➡️ Otherwise show normal text.
+              textDecoration:
+                todo.completed
+                  ? "line-through"
+                  : "none"
+
+            }}
+          >
+
+            {/* ➡️ Show emoji based on completed status */}
             {todo.completed ? "✅ " : "⬜ "}
 
             {/* ➡️ Show task text */}
